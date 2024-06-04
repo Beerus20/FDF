@@ -1,6 +1,7 @@
 #include "./minilibx/mlx.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "ft_fdf.h"
 
 typedef struct	s_data {
 	void	*img;
@@ -39,23 +40,44 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-int	main(void)
+void	test(void *mlx, t_data *data, int w, int h)
 {
-	t_vars	vars;
-	t_data	img;
+	int	x;
+	int	y;
+	int	opp;
+	unsigned char *ptr;
 
-	vars.mlx = mlx_init();
-	if (!vars.mlx)
-		ft_exit(&vars);
-	vars.win = mlx_new_window(vars.mlx, 1000, 800, "FDF ---");
-	if (!vars.win)
-		ft_exit(&vars);
-	img.img = mlx_new_image(vars.mlx, 5000, 5000);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	mlx_hook(vars.win, 2, 1L<<0, ft_key_event, &vars);
-	my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
-	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
-	mlx_loop(vars.mlx);
-	ft_exit(&vars);
+	opp = data->bits_per_pixel / 8;
+	y = h;
+	ptr = NULL;
+	while (y--)
+	{
+		ptr = data->addr + y * data->line_length;
+		x = w;
+		while (x--)
+			*(ptr+x*opp) = 255;
+	}
+}
+
+int	main(int argc, const char **argv)
+{
+	ft_get_map(argv[1]);
+	// t_vars	vars;
+	// t_data	img;
+
+	// vars.mlx = mlx_init();
+	// if (!vars.mlx)
+	// 	ft_exit(&vars);
+	// vars.win = mlx_new_window(vars.mlx, 1000, 800, "FDF ---");
+	// if (!vars.win)
+	// 	ft_exit(&vars);
+	// img.img = mlx_new_image(vars.mlx, 50, 500);
+	// img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+	// mlx_hook(vars.win, 2, 1L<<0, ft_key_event, &vars);
+	// test(vars.mlx, &img, 50, 500);
+	// mlx_put_image_to_window(vars.mlx, vars.win, img.img, 50, 50);
+	// mlx_destroy_image(vars.mlx, img.img);
+	// mlx_loop(vars.mlx);
+	// ft_exit(&vars);
 	return (0);
 }
