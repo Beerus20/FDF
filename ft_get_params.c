@@ -17,34 +17,32 @@ int	ft_get_nbcol(char *line)
 	return (r_value);
 }
 
-int	ft_z_value(char *line)
+static int	ft_inc(int value)
 {
-	int	sign;
-	int	r_value;
+	int	move;
 
-	sign = 1;
-	r_value = 0;
-	while (*line && *line != ' ')
+	move = 0;
+	if (value <= 0)
 	{
-		if (*line == '-')
-		{
-			sign = -1;
-			line++;
-		}
-		r_value = (*line - '0') + (r_value * 10);
-		line++;
+		move++;
+		value *= -1;
 	}
-	return (r_value * sign);
+	while (value)
+	{
+		value /= 10;
+		move++;
+	}
+	return (move);
 }
 
 t_coor	*ft_get_colvalue(char *line, int nb_col, int y)
 {
 	t_coor	*r_value;
-	char	*tmp;
 	int		i;
+	int		k;
 
 	i = 0;
-	tmp = NULL;
+	k = 0;
 	r_value = (t_coor *)malloc(sizeof(t_coor) * nb_col);
 	if (!r_value)
 		exit(1);
@@ -52,18 +50,13 @@ t_coor	*ft_get_colvalue(char *line, int nb_col, int y)
 	{
 		r_value[i].c = i;
 		r_value[i].y = y;
-		r_value[i].z = ft_z_value(line);
-		while (*(line++) != ' ' && *line)
-			;
+		r_value[i].z = ft_atoi(line);
+		k = ft_inc(r_value[i].z);
+		line += k;
+		while (*line == ' ')
+			line++;
 		i++;
 	}
-	i = 0;
-	while (i < nb_col)
-	{
-		ft_printf("%d ", r_value[i].z);
-		i++;
-	}
-	ft_printf("\n");
 	return (r_value);
 }
 
@@ -117,7 +110,7 @@ t_map	**ft_get_map(const char *file_name)
 	r_value = ft_get_coor(lines);
 	ft_lstiter(lines, ft_show);
 	// ft_show_map(r_value);
-	// ft_show_coor(r_value);
+	ft_show_coor(r_value);
 	close(fd);
 	return (NULL);
 }
