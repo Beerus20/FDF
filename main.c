@@ -57,26 +57,28 @@ void	ft_update_mapv(t_map *map, int p_id, int (*f)(int))
 
 int	ft_test(int value)
 {
-	return (value + 1);
+	return (value * 5);
 }
 
 int	ft_zoom(int keycode, t_vars *vars)
 {
-	t_data	img;
-
 	if (keycode == 'x')
 		exit(0);
 	if (keycode == 'z')
 	{
-
-		img.img = mlx_new_image(vars->mlx, 1000, 800);
-		img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-		ft_update_mapv(vars->map, 3, ft_test);
+		vars->map->sup += 10;
 		mlx_clear_window(vars->mlx, vars->win);
-		ft_show_map(vars->map);
-		ft_draw_map(vars->map, &img);
-		mlx_put_image_to_window(vars->mlx, vars->win, &img, 0, 0);
-		mlx_loop(vars->mlx);
+		// mlx_destroy_image(vars->mlx, vars->data);
+		ft_update_mapv(vars->map, 3, ft_test);
+		vars->data = (t_data *)malloc(sizeof(t_data));
+		vars->data->img = mlx_new_image(vars->mlx, 500, 500);
+		vars->data->addr = mlx_get_data_addr(vars->data->img, &vars->data->bits_per_pixel, &vars->data->line_length, &vars->data->endian);
+		ft_draw_map(vars->map, vars->data);
+		mlx_put_image_to_window(vars->mlx, vars->win, vars->data->img, 0, 0);
+
+		// ft_show_element(vars->map);
+		// ft_plotline(prev, next, vars->data);
+		// vars->map->sup += 1;
 	}
 	return (0);
 }
@@ -86,22 +88,23 @@ int	main(int argc, const char **argv)
 	t_vars	vars;
 	t_data	img;
 
+	vars.data = (t_data *)malloc(sizeof(t_data));
 	vars.map = ft_get_map(argv[1]);
+	vars.map->sup = 1;
 	vars.mlx = mlx_init();
-	if (!vars.mlx)
+	if (!vars.mlx || !vars.data)
 		ft_exit(&vars);
 	vars.win = mlx_new_window(vars.mlx, 1000, 800, "FDF ---");
 	if (!vars.win)
 		ft_exit(&vars);
-	img.img = mlx_new_image(vars.mlx, 1000, 800);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	vars.data = &img;
+	vars.data->img = mlx_new_image(vars.mlx, 500, 500);
+	vars.data->addr = mlx_get_data_addr(vars.data->img, &vars.data->bits_per_pixel, &vars.data->line_length, &vars.data->endian);
 	// mlx_hook(vars.win, 2, 1L<<0, ft_key_event, &vars);
 	mlx_key_hook(vars.win, ft_zoom, &vars);
 	// ft_plotline(20, 20, 30, 100, &img);
-	ft_draw_map(vars.map, &img);
+	ft_draw_map(vars.map, vars.data);
 
-	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
+	mlx_put_image_to_window(vars.mlx, vars.win, vars.data->img, 0, 0);
 	// mlx_destroy_image(vars.mlx, img.img);
 
 	mlx_loop(vars.mlx);

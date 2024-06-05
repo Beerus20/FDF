@@ -17,6 +17,8 @@ typedef struct s_coor
 
 typedef struct s_map
 {
+	int		sup;
+	int		zoom;
 	int		col;
 	int		row;
 	t_coor	**coor;
@@ -39,7 +41,7 @@ void	ft_show_element(t_map *map);
 
 /*--------------------- DRAW ---------------------*/
 void	ft_putpxl(int x, int y, int c, t_data *data);
-// void	ft_plotline(t_coor s, t_coor e, t_data *data);
+void	ft_plotline(t_coor s, t_coor e, t_data *data);
 void	ft_draw_map(t_map *map, t_data *data);
 
 /*--------------------- FREE ---------------------*/

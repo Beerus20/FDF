@@ -39,7 +39,7 @@ void	ft_plotlinelow(t_coor s, t_coor e, t_data *data)
 		dy = -dy;
 	}
 	D = (2 * dy) - dx;
-	while (s.x++ < e.x)
+	while (s.x < e.x)
 	{
 		ft_putpxl(s.x, s.y, 0xFFFFFF, data);
 		if (D > 0)
@@ -49,6 +49,7 @@ void	ft_plotlinelow(t_coor s, t_coor e, t_data *data)
 		}
 		else
 			D += 2 * dy;
+		s.x++;
 	}
 }
 
@@ -68,7 +69,7 @@ void	ft_plotlinehigh(t_coor s, t_coor e, t_data *data)
 		dx = -dx;
 	}
 	D = (2 * dx) - dy;
-	while (s.y++ < e.y)
+	while (s.y < e.y)
 	{
 		ft_putpxl(s.x, s.y, 0xFFFFFF, data);
 		if (D > 0)
@@ -78,6 +79,7 @@ void	ft_plotlinehigh(t_coor s, t_coor e, t_data *data)
 		}
 		else
 			D += 2 * dx;
+		s.y++;
 	}
 }
 
@@ -104,26 +106,22 @@ void	ft_draw(int i, int j, t_map *map, t_data *data)
 	t_coor	prev;
 
 	prev = map->coor[j][i];
-	if (map->coor[j][i].x != 0)
+	if (i != 0)
 		prev = map->coor[j][i - 1];
 	ft_plotline(prev, map->coor[j][i], data);
 	prev = map->coor[j][i];
-	if (map->coor[j][i].y != 0)
+	if (j != 0)
 		prev = map->coor[j - 1][i];
 	ft_plotline(prev, map->coor[j][i], data);
 }
 
 void	ft_draw_map(t_map *map, t_data *data)
 {
-	t_coor	prev;
-	t_coor	next;
 	int		i;
 	int		j;
 
 	j = 0;
-	prev.x = 0;
-	prev.y = 0;
-	while (j < map->row - 1)
+	while (j < map->row)
 	{
 		i = 0;
 		while (i < map->col)
