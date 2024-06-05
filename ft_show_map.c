@@ -4,6 +4,48 @@ void	ft_show_map(t_map *map)
 {
 	int	i;
 	int	j;
+	int	z;
+
+	j = 0;
+	i = 0;
+	ft_printf("COOR	: row [%d] - col [%d]\n%6s", map->row, map->col, "");
+	while (i < map->col)
+	{
+		ft_printf("%3d", i);
+		i++;
+	}
+	i = 0;
+	ft_printf("\n%6s", "");
+	while (i < map->col)
+	{
+		ft_printf("---");
+		i++;
+	}
+	ft_printf("\n");
+	while (j < map->row)
+	{
+		i = 0;
+		ft_printf(" %3d |", j);
+		while (i < map->col)
+		{
+			z = map->coor[j][i].z;
+			if (z > 0)
+				ft_printf("\033[0;32m%3d\033[0;0m", z);
+			else if (z < 0)
+				ft_printf("\033[0;31m%3d\033[0;0m", z);
+			else
+				ft_printf("%3d", z);
+			i++;
+		}
+		ft_printf("\n");
+		j++;
+	}
+}
+
+void	ft_show_element(t_map *map)
+{
+	int	i;
+	int	j;
 	int	x;
 	int	y;
 	int	z;

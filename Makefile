@@ -1,5 +1,5 @@
 NAME		= fdf
-FILES		= main.c ft_show_map.c ft_get_params.c
+FILES		= main.c ft_show_map.c ft_get_params.c ft_draw.c
 OBJS		= $(FILES:%.c=./output/%.o)
 CC			= gcc -g
 CFLAGS		= -Wall -Wextra -Werror
@@ -25,8 +25,14 @@ output			:
 ./output/%.o	: %.c | output
 					$(CC)  -c $< -o $@
 
-test\:%			:
-					valgrind --leak-check=full --track-origins=yes ./fdf maps/$(subst test:,,$@)
+test\:%			: all
+					valgrind --leak-check=full --track-origins=yes ./fdf maps/$(subst test:,,$@).fdf
+
+debug\:%			: all
+					gdb ./fdf maps/$(subst test:,,$@).fdf
+
+run\:%			: all
+					./fdf maps/$(subst run:,,$@).fdf
 
 $(NAME)			: $(OBJS)
 					make -C $(P_MINILIBX) && make -C $(P_GNL) && make -C $(P_LIBFT) && make -C $(P_PRINTF)

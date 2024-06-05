@@ -3,17 +3,11 @@
 #include <stdlib.h>
 #include "ft_fdf.h"
 
-typedef struct	s_data {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}				t_data;
-
 typedef struct	s_vars {
 	void	*mlx;
 	void	*win;
+	t_map	*map;
+	t_data	*data;
 }	t_vars;
 
 void	ft_exit(t_vars *vars)
@@ -32,52 +26,86 @@ int	ft_key_event(int keycode, t_vars *vars)
 	return (0);
 }
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void	ft_update_mapv(t_map *map, int p_id, int (*f)(int))
 {
-	char	*dst;
+	int	i;
+	int	j;
 
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
+	j = 0;
+	while (j < map->row)
+	{
+		i = 0;
+		while (i < map->col)
+		{
+			if (p_id == 0)
+				map->coor[j][i].x = (*f)(map->coor[j][i].x);
+			else if (p_id == 1)
+				map->coor[j][i].y = (*f)(map->coor[j][i].y);
+			else if (p_id == 2)
+				map->coor[j][i].z = (*f)(map->coor[j][i].z);
+			else
+			{
+				map->coor[j][i].x = (*f)(map->coor[j][i].x);
+				map->coor[j][i].y = (*f)(map->coor[j][i].y);
+				map->coor[j][i].z = (*f)(map->coor[j][i].z);
+			}
+			i++;
+		}
+		j++;
+	}
 }
 
-void	test(void *mlx, t_data *data, int w, int h)
+int	ft_test(int value)
 {
-	int	x;
-	int	y;
-	int	opp;
-	unsigned char *ptr;
+	return (value + 1);
+}
 
-	opp = data->bits_per_pixel / 8;
-	y = h;
-	ptr = NULL;
-	while (y--)
+int	ft_zoom(int keycode, t_vars *vars)
+{
+	t_data	img;
+
+	if (keycode == 'x')
+		exit(0);
+	if (keycode == 'z')
 	{
-		ptr = data->addr + y * data->line_length;
-		x = w;
-		while (x--)
-			*(ptr+x*opp) = 255;
+
+		img.img = mlx_new_image(vars->mlx, 1000, 800);
+		img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+		ft_update_mapv(vars->map, 3, ft_test);
+		mlx_clear_window(vars->mlx, vars->win);
+		ft_show_map(vars->map);
+		ft_draw_map(vars->map, &img);
+		mlx_put_image_to_window(vars->mlx, vars->win, &img, 0, 0);
+		mlx_loop(vars->mlx);
 	}
+	return (0);
 }
 
 int	main(int argc, const char **argv)
 {
-	ft_get_map(argv[1]);
-	// t_vars	vars;
-	// t_data	img;
+	t_vars	vars;
+	t_data	img;
 
-	// vars.mlx = mlx_init();
-	// if (!vars.mlx)
-	// 	ft_exit(&vars);
-	// vars.win = mlx_new_window(vars.mlx, 1000, 800, "FDF ---");
-	// if (!vars.win)
-	// 	ft_exit(&vars);
-	// img.img = mlx_new_image(vars.mlx, 50, 500);
-	// img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+	vars.map = ft_get_map(argv[1]);
+	vars.mlx = mlx_init();
+	if (!vars.mlx)
+		ft_exit(&vars);
+	vars.win = mlx_new_window(vars.mlx, 1000, 800, "FDF ---");
+	if (!vars.win)
+		ft_exit(&vars);
+	img.img = mlx_new_image(vars.mlx, 1000, 800);
+	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+	vars.data = &img;
 	// mlx_hook(vars.win, 2, 1L<<0, ft_key_event, &vars);
-	// test(vars.mlx, &img, 50, 500);
-	// mlx_put_image_to_window(vars.mlx, vars.win, img.img, 50, 50);
+	mlx_key_hook(vars.win, ft_zoom, &vars);
+	// ft_plotline(20, 20, 30, 100, &img);
+	ft_draw_map(vars.map, &img);
+
+	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
 	// mlx_destroy_image(vars.mlx, img.img);
-	// mlx_loop(vars.mlx);
-	// ft_exit(&vars);
+
+	mlx_loop(vars.mlx);
+	ft_exit(&vars);
+	// ft_free_map(map);
 	return (0);
 }

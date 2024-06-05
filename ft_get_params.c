@@ -48,7 +48,7 @@ t_coor	*ft_get_colvalue(char *line, int nb_col, int y)
 		exit(1);
 	while (i < nb_col)
 	{
-		r_value[i].c = i;
+		r_value[i].x = i;
 		r_value[i].y = y;
 		r_value[i].z = ft_atoi(line);
 		k = ft_inc(r_value[i].z);
@@ -85,12 +85,21 @@ t_map	*ft_get_coor(t_list *lines)
 	return (map);
 }
 
-void	ft_show(void *content)
+void	ft_free_map(t_map *map)
 {
-	ft_printf("%s", (char *)content);
+	int	i;
+
+	i = 0;
+	while (i < map->row)
+	{
+		free(map->coor[i]);
+		i++;
+	}
+	free(map->coor);
+	free(map);
 }
 
-t_map	**ft_get_map(const char *file_name)
+t_map	*ft_get_map(const char *file_name)
 {
 	t_map	*r_value;
 	t_list	*lines;
@@ -108,9 +117,9 @@ t_map	**ft_get_map(const char *file_name)
 		line = get_next_line(fd);
 	}
 	r_value = ft_get_coor(lines);
-	ft_lstiter(lines, ft_show);
-	// ft_show_map(r_value);
-	ft_show_coor(r_value);
+	ft_show_map(r_value);
+	// ft_show_element(r_value);
 	close(fd);
-	return (NULL);
+	ft_lstclear(&lines, free);
+	return (r_value);
 }
