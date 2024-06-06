@@ -51,6 +51,12 @@ t_coor	*ft_get_colvalue(char *line, int nb_col, int y)
 		r_value[i].x = i;
 		r_value[i].y = y;
 		r_value[i].z = ft_atoi(line);
+		if (r_value[i].z > 0)
+			r_value[i].c = 0x00F450;
+		else if (r_value[i].z < 0)
+			r_value[i].c = 0x0050F4;
+		else
+			r_value[i].c = 0xFFFFFF;
 		k = ft_inc(r_value[i].z);
 		line += k;
 		while (*line == ' ')

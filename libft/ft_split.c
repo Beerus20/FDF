@@ -6,34 +6,34 @@
 /*   By: ballain <ballain@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 15:45:38 by ballain           #+#    #+#             */
-/*   Updated: 2024/05/31 19:46:47 by ballain          ###   ########.fr       */
+/*   Updated: 2024/06/06 13:03:03 by ballain          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	**ft_alloc_rvalue(char const *s, char c, int *nb_w)
+char	**ft_alloc_rvalue(char const *s, char c, int *nbw)
 {
 	int		i;
-	int		can_count_word;
+	int		can_countword;
 	char	**r_value;
 
 	i = 0;
-	can_count_word = 1;
+	can_countword = 1;
 	r_value = NULL;
 	while (s[i] != '\0')
 	{
-		if (s[i] != c && can_count_word)
+		if (s[i] != c && can_countword)
 		{
-			can_count_word = 0;
-			*nb_w += 1;
+			can_countword = 0;
+			*nbw += 1;
 		}
 		if (s[i] == c)
-			can_count_word = 1;
+			can_countword = 1;
 		i++;
 	}
-	*nb_w += 1;
-	r_value = (char **)malloc(sizeof(char *) * (*nb_w));
+	*nbw += 1;
+	r_value = (char **)malloc(sizeof(char *) * (*nbw));
 	if (!r_value)
 		return (0);
 	return (r_value);
@@ -86,14 +86,14 @@ int	ft_fill_content(char **r_value, char const *s, char c)
 
 char	**ft_split(char const *s, char c)
 {
-	int		nb_w;
+	int		nbw;
 	char	**r_value;
 
-	nb_w = 0;
-	r_value = ft_alloc_rvalue(s, c, &nb_w);
+	nbw = 0;
+	r_value = ft_alloc_rvalue(s, c, &nbw);
 	if (!r_value)
 		return (0);
-	if (nb_w == 0)
+	if (nbw == 0)
 	{
 		r_value[0] = NULL;
 		return (r_value);

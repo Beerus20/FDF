@@ -1,6 +1,6 @@
 #include "ft_fdf.h"
 
-static int	ft_abs(int value)
+int	ft_abs(int value)
 {
 	if (value < 0)
 		return (-value);
@@ -19,8 +19,10 @@ void	ft_putpxl(int x, int y, int c, t_data *data)
 {
 	int	offset;
 
-	offset = (data->line_length * y) + (x * (data->bits_per_pixel / 8));
-	*((unsigned int *)(offset + data->addr)) = 0xFFFFFF;
+	if (x >= WIDTH || y >= HEIGHT)
+		return ;
+	offset = (data->ll * y) + (x * (data->bpp / 8));
+	*((unsigned int *)(offset + data->img_ptr)) = c;
 }
 
 void	ft_plotlinelow(t_coor s, t_coor e, t_data *data)
@@ -39,9 +41,9 @@ void	ft_plotlinelow(t_coor s, t_coor e, t_data *data)
 		dy = -dy;
 	}
 	D = (2 * dy) - dx;
-	while (s.x < e.x)
+	while (s.x++ < e.x)
 	{
-		ft_putpxl(s.x, s.y, 0xFFFFFF, data);
+		ft_putpxl(s.x, s.y, e.c, data);
 		if (D > 0)
 		{
 			s.y += yi;
@@ -49,7 +51,6 @@ void	ft_plotlinelow(t_coor s, t_coor e, t_data *data)
 		}
 		else
 			D += 2 * dy;
-		s.x++;
 	}
 }
 
@@ -69,9 +70,9 @@ void	ft_plotlinehigh(t_coor s, t_coor e, t_data *data)
 		dx = -dx;
 	}
 	D = (2 * dx) - dy;
-	while (s.y < e.y)
+	while (s.y++ < e.y)
 	{
-		ft_putpxl(s.x, s.y, 0xFFFFFF, data);
+		ft_putpxl(s.x, s.y, e.c, data);
 		if (D > 0)
 		{
 			s.x += xi;
@@ -79,7 +80,6 @@ void	ft_plotlinehigh(t_coor s, t_coor e, t_data *data)
 		}
 		else
 			D += 2 * dx;
-		s.y++;
 	}
 }
 
@@ -115,20 +115,31 @@ void	ft_draw(int i, int j, t_map *map, t_data *data)
 	ft_plotline(prev, map->coor[j][i], data);
 }
 
-void	ft_draw_map(t_map *map, t_data *data)
+t_data	ft_init_data(void *mlx)
+{
+	t_data	data;
+
+	data.img = mlx_new_image(mlx, WIDTH, HEIGHT);
+	data.img_ptr = mlx_get_data_addr(data.img, &data.bpp, &data.ll, &data.e);
+	return (data);
+}
+
+void	ft_draw_image(t_window *w)
 {
 	int		i;
 	int		j;
 
 	j = 0;
-	while (j < map->row)
+	w->data = ft_init_data(w->mlx);
+	while (j < w->map->row)
 	{
 		i = 0;
-		while (i < map->col)
+		while (i < w->map->col)
 		{
-			ft_draw(i, j, map, data);
+			ft_draw(i, j, w->map, &w->data);
 			i++;
 		}
 		j++;
 	}
+	mlx_put_image_to_window(w->mlx, w->win, w->data.img, 0, 0);
 }

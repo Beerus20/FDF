@@ -6,7 +6,7 @@
 /*   By: ballain <ballain@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 10:10:15 by ballain           #+#    #+#             */
-/*   Updated: 2024/06/03 19:11:00 by ballain          ###   ########.fr       */
+/*   Updated: 2024/06/06 13:03:03 by ballain          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_init_flags(int flags[7])
 		flags[i++] = 0;
 }
 
-int	ft_get_width(char *str)
+int	ft_getwidth(char *str)
 {
 	int	r_value;
 
@@ -75,6 +75,6 @@ void	ft_check_flags(char *str, int flags[7])
 			break ;
 		str++;
 	}
-	flags[5] = ft_get_width(str);
+	flags[5] = ft_getwidth(str);
 	flags[6] = ft_get_prec(str);
 }
