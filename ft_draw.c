@@ -105,6 +105,7 @@ void	ft_draw(int i, int j, t_map *map, t_data *data)
 {
 	t_coor	prev;
 
+	ft_update_mapv(map, i, j);
 	prev = map->coor[j][i];
 	if (i != 0)
 		prev = map->coor[j][i - 1];

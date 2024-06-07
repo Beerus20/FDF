@@ -12,58 +12,32 @@ void	ft_exit(t_window *w)
 	exit(1);
 }
 
-void	ft_update_mapv(t_map *map, int p_id, int (*f)(int, int), int add)
-{
-	int	i;
-	int	j;
-
-	j = 0;
-	while (j < map->row)
-	{
-		i = 0;
-		while (i < map->col)
-		{
-			if (p_id == 0)
-				map->coor[j][i].x = (*f)(map->coor[j][i].x, add);
-			else if (p_id == 1)
-				map->coor[j][i].y = (*f)(map->coor[j][i].y, add);
-			else if (p_id == 2)
-				map->coor[j][i].z = (*f)(map->coor[j][i].z, add);
-			else
-			{
-				map->coor[j][i].x = (*f)(map->coor[j][i].x, add);
-				map->coor[j][i].y = (*f)(map->coor[j][i].y, add);
-				map->coor[j][i].z = (*f)(map->coor[j][i].z, add);
-			}
-			i++;
-		}
-		j++;
-	}
-}
-
 int	ft_zoom(int keycode, t_window *w)
 {
-	int	v_x;
-	int	v_y;
+	static int	add = 2;
 
-	v_x = w->map->coor[0][w->map->col - 1].x;
 	if (keycode == 'x')
 		ft_exit(w);
 
 	if (keycode == 65362 && w->map->coor[0][0].y > 0)
-		ft_update_mapv(w->map, 1, ft_op_sub, 2);
+		ft_up_modif_func(w->map, 1, add, ft_op_sub);
 	if (keycode == 65361 && w->map->coor[0][0].x > 0)
-		ft_update_mapv(w->map, 0, ft_op_sub, 2);
+		ft_up_modif_func(w->map, 0, add, ft_op_sub);
 	if (keycode == 65363 && w->map->coor[0][w->map->col - 1].x < WIDTH)
-		ft_update_mapv(w->map, 0, ft_op_add, 2);
+		ft_up_modif_func(w->map, 0, add, ft_op_add);
 	if (keycode == 65364)
-		ft_update_mapv(w->map, 1, ft_op_add, 2);
+		ft_up_modif_func(w->map, 1, add, ft_op_add);
 
 	if (keycode == 'a' && w->map->coor[0][w->map->col - 1].x > w->map->col - 1)
-		ft_update_mapv(w->map, 3, ft_op_div, 2);
+	{
+		ft_up_modif_func(w->map, 3, 2, ft_op_div);
+		add /= 2;
+	}
 	if (keycode == 'z')
-		ft_update_mapv(w->map, 3, ft_op_mul, 2);
-	// ft_printf("value	: [%d] [%c]\n", keycode, keycode);
+	{
+		ft_up_modif_func(w->map, 3, 2, ft_op_mul);
+		add *= 2;
+	}
 	mlx_clear_window(w->mlx, w->win);
 	ft_draw_image(w);
 	return (0);
@@ -93,7 +67,5 @@ int	main(int argc, const char **argv)
 
 	mlx_loop(w.mlx);
 	ft_exit(&w);
-	// ft_free_map(map);
-
 	return (0);
 }

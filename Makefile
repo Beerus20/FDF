@@ -1,5 +1,12 @@
 NAME		= fdf
-FILES		= main.c ft_show_map.c ft_get_params.c ft_draw.c ft_operator.c
+FILES		= \
+				main.c				\
+				ft_show_map.c		\
+				ft_get_params.c		\
+				ft_draw.c			\
+				ft_operator.c		\
+				ft_modif.c
+
 OBJS		= $(FILES:%.c=./output/%.o)
 CC			= gcc -g
 CFLAGS		= -Wall -Wextra -Werror
