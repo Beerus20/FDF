@@ -5,6 +5,7 @@ FILES		= \
 				ft_get_params.c		\
 				ft_draw.c			\
 				ft_operator.c		\
+				ft_rotation.c		\
 				ft_modif.c
 
 OBJS		= $(FILES:%.c=./output/%.o)

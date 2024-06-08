@@ -12,9 +12,33 @@ void	ft_exit(t_window *w)
 	exit(1);
 }
 
+void	ft_update_cgravity(t_map *map)
+{
+	int	i;
+	int	x_sum;
+	int	y_sum;
+
+	i = 0;
+	x_sum = 0;
+	y_sum = 0;
+	while (i < map->col)
+	{
+		x_sum += map->coor[0][i].x;
+		i++;
+	}
+	i = 0;
+	while (i < map->row)
+	{
+		y_sum += map->coor[i][0].y;
+		i++;
+	}
+	map->cgravity.x = map->coor[0][map->col / 2].x;
+	map->cgravity.y = map->coor[map->row / 2][0].y;
+}
+
 int	ft_zoom(int keycode, t_window *w)
 {
-	static int	add = 2;
+	static float	add = 2;
 
 	if (keycode == 'x')
 		ft_exit(w);
@@ -28,6 +52,14 @@ int	ft_zoom(int keycode, t_window *w)
 	if (keycode == 65364)
 		ft_up_modif_func(w->map, 1, add, ft_op_add);
 
+	if (keycode == 't')
+		ft_up_modif_func(w->map, 4, add, ft_rot_x_axes);
+	if (keycode == 'r')
+		ft_up_modif_func(w->map, 5, add, ft_rot_y_axes);
+	if (keycode == 'e')
+		ft_up_modif_func(w->map, 6, add, ft_rot_z_axes);
+
+
 	if (keycode == 'a' && w->map->coor[0][w->map->col - 1].x > w->map->col - 1)
 	{
 		ft_up_modif_func(w->map, 3, 2, ft_op_div);
@@ -38,6 +70,8 @@ int	ft_zoom(int keycode, t_window *w)
 		ft_up_modif_func(w->map, 3, 2, ft_op_mul);
 		add *= 2;
 	}
+	ft_show_map(w->map);
+	ft_update_cgravity(w->map);
 	mlx_clear_window(w->mlx, w->win);
 	ft_draw_image(w);
 	return (0);
@@ -54,16 +88,9 @@ int	main(int argc, const char **argv)
 	w.win = mlx_new_window(w.mlx, WIDTH, HEIGHT, "FDF ---");
 	if (!w.win)
 		ft_exit(&w);
-	// w.data.img = mlx_new_image(w.mlx, WIDTH, HEIGHT);
-	// w.data.img_ptr = mlx_get_data_addr(w.data.img, &w.data.bpp, &w.data.ll, &w.data.e);
-
-	// mlx_expose_hook(w.win, ft_zoom, &w);
 	mlx_hook(w.win, 2, 1L<<0, ft_zoom, &w);
-	// mlx_key_hook(w.win, ft_zoom, &w);
-
+	ft_update_cgravity(w.map);
 	ft_draw_image(&w);
-
-	// mlx_put_image_to_window(w.mlx, w.win, w.data.img, 0, 0);
 
 	mlx_loop(w.mlx);
 	ft_exit(&w);
