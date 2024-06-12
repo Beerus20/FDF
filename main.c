@@ -14,13 +14,12 @@ void	ft_exit(t_window *w)
 
 void	ft_update_cgravity(t_map *map)
 {
-	map->cgravity.x = map->coor[map->col / 2][map->col / 2].x * map->modif.zoom;
-	map->cgravity.y = map->coor[map->col / 2][map->col / 2].y * map->modif.zoom;
+	map->cgravity.x = map->coor[map->row / 2][map->col / 2].x * map->modif.zoom;
+	map->cgravity.y = map->coor[map->row / 2][map->col / 2].y * map->modif.zoom;
 	map->cgravity.z = map->coor[map->row / 2][map->col / 2].z * map->modif.zoom;
 	ft_op_add(&map->cgravity.x, &map->modif.gap.x);
 	ft_op_add(&map->cgravity.y, &map->modif.gap.y);
 	ft_op_add(&map->cgravity.z, &map->modif.gap.z);
-	// map->cgravity = ft_apply_modif(&map->cgravity, &map->cgravity, &map->modif);
 }
 
 int	main(int argc, const char **argv)

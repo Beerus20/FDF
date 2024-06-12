@@ -101,21 +101,6 @@ void	ft_plotline(t_coor s, t_coor e, t_data *data)
 	}
 }
 
-// void	ft_draw(int i, int j, t_map *map, t_data *data)
-// {
-// 	t_coor	prev;
-
-// 	// ft_update_mapv(map, i, j);
-// 	prev = map->coor[j][i];
-// 	if (i != 0)
-// 		prev = map->coor[j][i - 1];
-// 	ft_plotline(prev, map->coor[j][i], data);
-// 	prev = map->coor[j][i];
-// 	if (j != 0)
-// 		prev = map->coor[j - 1][i];
-// 	ft_plotline(prev, map->coor[j][i], data);
-// }
-
 void	ft_draw(int i, int j, t_map *map, t_data *data)
 {
 	t_coor	prev;
@@ -125,8 +110,6 @@ void	ft_draw(int i, int j, t_map *map, t_data *data)
 	next = ft_apply_modif(&map->cgravity, &map->coor[j][i], &map->modif);
 	if (i != 0)
 		prev = ft_apply_modif(&map->cgravity, &map->coor[j][i - 1], &map->modif);
-	// printf("value	: [%.2f] [%.2f] [%.2f]\n", map->coor[j][i].x, map->coor[j][i].y, map->coor[j][i].z);
-	// printf("value	: [%.2f] [%.2f] [%.2f]\n\n", next.x, next.y, next.z);
 	ft_plotline(prev, next, data);
 	prev = ft_apply_modif(&map->cgravity, &map->coor[j][i], &map->modif);
 	next = ft_apply_modif(&map->cgravity, &map->coor[j][i], &map->modif);
