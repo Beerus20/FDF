@@ -127,6 +127,9 @@ t_map	*ft_get_map(const char *file_name)
 	// ft_show_element(r_value);
 	close(fd);
 	ft_lstclear(&lines, free);
-	ft_up_modif_func(r_value, 3, 0, ft_op_add);
+	// ft_up_modif_func(r_value, 3, 0, ft_op_add);
+	r_value->modif.teta.x = 0;
+	r_value->modif.teta.y = 0;
+	r_value->modif.teta.z = 0;
 	return (r_value);
 }

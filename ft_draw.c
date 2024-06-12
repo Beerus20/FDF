@@ -21,7 +21,7 @@ void	ft_putpxl(double x, double y, int c, t_data *data)
 
 	if (x >= WIDTH || y >= HEIGHT)
 		return ;
-	offset = ((data->ll * ceil(y)) + (ceil(x) * (data->bpp / 8)));
+	offset = ((data->ll * floor(y)) + (floor(x) * (data->bpp / 8)));
 	*((unsigned int *)(offset + data->img_ptr)) = c;
 }
 
@@ -101,19 +101,38 @@ void	ft_plotline(t_coor s, t_coor e, t_data *data)
 	}
 }
 
+// void	ft_draw(int i, int j, t_map *map, t_data *data)
+// {
+// 	t_coor	prev;
+
+// 	// ft_update_mapv(map, i, j);
+// 	prev = map->coor[j][i];
+// 	if (i != 0)
+// 		prev = map->coor[j][i - 1];
+// 	ft_plotline(prev, map->coor[j][i], data);
+// 	prev = map->coor[j][i];
+// 	if (j != 0)
+// 		prev = map->coor[j - 1][i];
+// 	ft_plotline(prev, map->coor[j][i], data);
+// }
+
 void	ft_draw(int i, int j, t_map *map, t_data *data)
 {
 	t_coor	prev;
+	t_coor	next;
 
-	ft_update_mapv(map, i, j);
-	prev = map->coor[j][i];
+	prev = ft_apply_modif(&map->cgravity, &map->coor[j][i], &map->modif);
+	next = ft_apply_modif(&map->cgravity, &map->coor[j][i], &map->modif);
 	if (i != 0)
-		prev = map->coor[j][i - 1];
-	ft_plotline(prev, map->coor[j][i], data);
-	prev = map->coor[j][i];
+		prev = ft_apply_modif(&map->cgravity, &map->coor[j][i - 1], &map->modif);
+	// printf("value	: [%.2f] [%.2f] [%.2f]\n", map->coor[j][i].x, map->coor[j][i].y, map->coor[j][i].z);
+	// printf("value	: [%.2f] [%.2f] [%.2f]\n\n", next.x, next.y, next.z);
+	ft_plotline(prev, next, data);
+	prev = ft_apply_modif(&map->cgravity, &map->coor[j][i], &map->modif);
+	next = ft_apply_modif(&map->cgravity, &map->coor[j][i], &map->modif);
 	if (j != 0)
-		prev = map->coor[j - 1][i];
-	ft_plotline(prev, map->coor[j][i], data);
+		prev = ft_apply_modif(&map->cgravity, &map->coor[j - 1][i], &map->modif);;
+	ft_plotline(prev, next, data);
 }
 
 t_data	ft_init_data(void *mlx)
