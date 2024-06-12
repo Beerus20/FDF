@@ -1,6 +1,6 @@
 #include "ft_fdf.h"
 
-void	ft_up_modif_func(t_map *map, int id_m, int add, void (*f_modif)(float *, float *))
+void	ft_up_modif_func(t_map *map, int id_m, int add, void (*f_modif)(double *, double *))
 {
 	map->id_m = id_m;
 	map->f_modif = f_modif;

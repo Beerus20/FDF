@@ -15,22 +15,22 @@ void	ft_init_coor(t_coor *coor, int x, int y, int z)
 	coor->c = 0;
 }
 
-void	ft_putpxl(float x, float y, int c, t_data *data)
+void	ft_putpxl(double x, double y, int c, t_data *data)
 {
 	int	offset;
 
 	if (x >= WIDTH || y >= HEIGHT)
 		return ;
-	offset = (int)((data->ll * y) + (x * (data->bpp / 8)));
+	offset = ((data->ll * ceil(y)) + (ceil(x) * (data->bpp / 8)));
 	*((unsigned int *)(offset + data->img_ptr)) = c;
 }
 
 void	ft_plotlinelow(t_coor s, t_coor e, t_data *data)
 {
-	float	dx;
-	float	dy;
-	float	D;
-	float	yi;
+	double	dx;
+	double	dy;
+	double	D;
+	double	yi;
 
 	dx = e.x - s.x;
 	dy = e.y - s.y;
@@ -56,10 +56,10 @@ void	ft_plotlinelow(t_coor s, t_coor e, t_data *data)
 
 void	ft_plotlinehigh(t_coor s, t_coor e, t_data *data)
 {
-	float	dx;
-	float	dy;
-	float	D;
-	float	xi;
+	double	dx;
+	double	dy;
+	double	D;
+	double	xi;
 
 	dx = e.x - s.x;
 	dy = e.y - s.y;

@@ -123,7 +123,7 @@ t_map	*ft_get_map(const char *file_name)
 		line = get_next_line(fd);
 	}
 	r_value = ft_get_coor(lines);
-	ft_show_map(r_value);
+	// ft_show_map(r_value, 0);
 	// ft_show_element(r_value);
 	close(fd);
 	ft_lstclear(&lines, free);

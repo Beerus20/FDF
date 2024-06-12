@@ -14,31 +14,16 @@ void	ft_exit(t_window *w)
 
 void	ft_update_cgravity(t_map *map)
 {
-	int	i;
-	int	x_sum;
-	int	y_sum;
-
-	i = 0;
-	x_sum = 0;
-	y_sum = 0;
-	while (i < map->col)
-	{
-		x_sum += map->coor[0][i].x;
-		i++;
-	}
-	i = 0;
-	while (i < map->row)
-	{
-		y_sum += map->coor[i][0].y;
-		i++;
-	}
-	map->cgravity.x = map->coor[0][map->col / 2].x;
-	map->cgravity.y = map->coor[map->row / 2][0].y;
+	map->cgravity.x = map->coor[map->row / 2][map->col / 2].x;
+	map->cgravity.y = map->coor[map->row / 2][map->col / 2].y;
+	map->cgravity.z = map->coor[map->row / 2][map->col / 2].z;
 }
 
 int	ft_zoom(int keycode, t_window *w)
 {
-	static float	add = 2;
+	static double	add = 2;
+	static double	x = 0;
+	static double	z = 10;
 
 	if (keycode == 'x')
 		ft_exit(w);
@@ -59,7 +44,6 @@ int	ft_zoom(int keycode, t_window *w)
 	if (keycode == 'e')
 		ft_up_modif_func(w->map, 6, add, ft_rot_z_axes);
 
-
 	if (keycode == 'a' && w->map->coor[0][w->map->col - 1].x > w->map->col - 1)
 	{
 		ft_up_modif_func(w->map, 3, 2, ft_op_div);
@@ -70,9 +54,8 @@ int	ft_zoom(int keycode, t_window *w)
 		ft_up_modif_func(w->map, 3, 2, ft_op_mul);
 		add *= 2;
 	}
-	ft_show_map(w->map);
+	ft_show_map(w->map, 0);
 	ft_update_cgravity(w->map);
-	mlx_clear_window(w->mlx, w->win);
 	ft_draw_image(w);
 	return (0);
 }

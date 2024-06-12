@@ -1,22 +1,19 @@
 #include "ft_fdf.h"
 
-float	ft_rad(int degree)
+double	ft_rad(double degree)
 {
 	return (degree * PI / 180);
 }
 
-int	ft_linear_combinaison(float a, float b)
+double	ft_linear_combinaison(double a, double b)
 {
-	int	deg;
-
-	deg = 30;
-	return floor(cos(ft_rad(deg)) * a + sin(ft_rad(deg)) * b);
+	return (cos(ft_rad(DEG)) * a + sin(ft_rad(DEG)) * b);
 }
 
-void	ft_rot_x_axes(float *y, float *z)
+void	ft_rot_x_axes(double *y, double *z)
 {
-	int	_y;
-	int	_z;
+	double	_y;
+	double	_z;
 
 	_y = *y;
 	_z = *z;
@@ -24,10 +21,10 @@ void	ft_rot_x_axes(float *y, float *z)
 	*z = ft_linear_combinaison(_z, _y);
 }
 
-void	ft_rot_y_axes(float *x, float *z)
+void	ft_rot_y_axes(double *x, double *z)
 {
-	int	_x;
-	int	_z;
+	double	_x;
+	double	_z;
 
 	_x = *x;
 	_z = *z;
@@ -35,10 +32,10 @@ void	ft_rot_y_axes(float *x, float *z)
 	*z = ft_linear_combinaison(_z, -_x);
 }
 
-void	ft_rot_z_axes(float *x, float *y)
+void	ft_rot_z_axes(double *x, double *y)
 {
-	int	_x;
-	int	_y;
+	double	_x;
+	double	_y;
 
 	_x = *x;
 	_y = *y;

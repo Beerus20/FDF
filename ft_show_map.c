@@ -1,6 +1,6 @@
 #include "ft_fdf.h"
 
-void	ft_show_map(t_map *map)
+void	ft_show_map(t_map *map, int id)
 {
 	int	i;
 	int	j;
@@ -28,8 +28,13 @@ void	ft_show_map(t_map *map)
 		ft_printf(" %3d |", j);
 		while (i < map->col)
 		{
-			z = map->coor[j][i].z;
-			if (z > 0)
+			if (id == 0)
+				z = map->coor[j][i].z;
+			if (id == 1)
+				z = map->coor[j][i].x;
+			if (id == 2)
+				z = map->coor[j][i].y;
+			if (map->coor[j][i].z > 0)
 				ft_printf("\033[0;32m%3d\033[0;0m", z);
 			else if (z < 0)
 				ft_printf("\033[0;31m%3d\033[0;0m", z);
