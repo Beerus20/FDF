@@ -43,7 +43,7 @@ typedef struct s_coor
 	double	x;
 	double	y;
 	double	z;
-	int	c;
+	t_color	c;
 }	t_coor;
 
 typedef struct s_modif
@@ -90,11 +90,11 @@ void	ft_rotate_map(int keycode, t_map *map);
 int		ft_key_event(int keycode, t_window *w);
 
 /*--------------------- COLOR ---------------------*/
-int		get_t(int trgb);
-int		get_r(int trgb);
-int		get_g(int trgb);
-int		get_b(int trgb);
-int		create_trgb(int t, int r, int g, int b);
+int		ft_get_t(int trgb);
+int		ft_get_r(int trgb);
+int		ft_get_g(int trgb);
+int		ft_get_b(int trgb);
+int		create_trgb(t_color c);
 
 /*--------------------- PARAMS ---------------------*/
 void	ft_show_map(t_map *map, int id);
@@ -111,7 +111,7 @@ void	ft_rot_z_axes(t_coor *cg, double *x, double *y, int teta);
 t_coor	ft_apply_modif(t_coor *cg, t_coor *e, t_modif *modif);
 
 /*--------------------- DRAW ---------------------*/
-void	ft_putpxl(double x, double y, int c, t_data *data);
+void	ft_putpxl(double x, double y, t_color c, t_data *data);
 void	ft_plotline(t_coor s, t_coor e, t_data *data);
 void	ft_draw_image(t_window *w);
 

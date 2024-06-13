@@ -7,6 +7,7 @@ t_coor	ft_apply_modif(t_coor *cg, t_coor *e, t_modif *modif)
 	r_value.x = e->x;
 	r_value.y = e->y;
 	r_value.z = e->z;
+	r_value.c = e->c;
 	r_value.x *= modif->zoom;
 	r_value.y *= modif->zoom;
 	r_value.z *= modif->zoom;

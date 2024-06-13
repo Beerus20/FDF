@@ -12,17 +12,18 @@ void	ft_init_coor(t_coor *coor, int x, int y, int z)
 	coor->x = x;
 	coor->y = y;
 	coor->z = z;
-	coor->c = 0;
+	// coor->c = 0;
 }
 
-void	ft_putpxl(double x, double y, int c, t_data *data)
+void	ft_putpxl(double x, double y, t_color c, t_data *data)
 {
 	int	offset;
 
 	if (x >= WIDTH || y >= HEIGHT)
 		return ;
 	offset = ((data->ll * (int)(y)) + ((int)(x) * (data->bpp / 8)));
-	*((unsigned int *)(offset + data->img_ptr)) = create_trgb(get_t(c), 255, 255, 0);
+	// printf("rgb	: [%d] [%d] [%d]\n", c.r, c.g, c.b);
+	*((unsigned int *)(offset + data->img_ptr)) = create_trgb(c);
 }
 
 void	ft_plotlinelow(t_coor s, t_coor e, t_data *data)

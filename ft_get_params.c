@@ -1,48 +1,144 @@
 #include "ft_fdf.h"
 
+static int	ft_isspace(const int c)
+{
+	if ((c >= 9 && c <= 13) || c == 32)
+		return (1);
+	return (0);
+}
+
 int	ft_get_nbcol(char *line)
 {
 	int	r_value;
 
 	r_value = 0;
+	while (ft_isspace(*line))
+		line++;
 	while (*line)
 	{
-		while (!ft_isdigit(*line) && *line)
+		while (!ft_isspace(*line) && *line)
 			line++;
-		if (ft_isdigit(*line))
+		if (ft_isspace(*line))
 			r_value++;
-		while (*line != ' ' && *line)
+		while (ft_isspace(*line))
 			line++;
 	}
 	return (r_value);
 }
 
-static int	ft_inc(int value)
+int	ft_pow(int value, int n)
 {
-	int	move;
+	int	r_value;
 
-	move = 0;
-	if (value <= 0)
+	r_value = 1;
+	while (n > 0)
 	{
-		move++;
-		value *= -1;
+		if (n % 2 == 1)
+			r_value *= value;
+		value *= value;
+		n /= 2;
 	}
-	while (value)
+	return (r_value);
+}
+
+int	ft_ctoi(char c)
+{
+	if (ft_isdigit(c))
+		return (c - '0');
+	if (c >= 'A' && c <= 'F')
+		return (c - '7');
+	if (c >= 'a' && c <= 'f')
+		return (c - 'W');
+	return (0);
+}
+
+int	ft_htoic(char *line)
+{
+	int		i;
+	int		r_value;
+	char	*tmp;
+
+	i = 6;
+	r_value = 0;
+	tmp = line;
+	// while (!ft_isspace(*tmp) && *tmp && i++)
+	// 	tmp++;
+	while (i-- >= 0 && !ft_isspace(*line))
 	{
-		value /= 10;
-		move++;
+		r_value += ft_ctoi(*line) * ft_pow(16, i);
+		line++;
 	}
-	return (move);
+	return (r_value);
+}
+
+static int	ft_get_color(t_coor *coor, char *line)
+{
+	int	color;
+	int	r_value;
+
+	coor->c.t = 0;
+	r_value = 1;
+	if (*line == 'x')
+	{
+		line++;
+		color = ft_htoic(line);
+		coor->c.t = ft_get_t(color);
+		coor->c.r = ft_get_r(color);
+		coor->c.g = ft_get_g(color);
+		coor->c.b = ft_get_b(color);
+		while (!ft_isspace(*line))
+		{
+			r_value++;
+			line++;
+		}
+		return (r_value);
+	}
+	else if (ft_isspace(*line))
+	{
+		coor->c.r = 0;
+		coor->c.g = 0;
+		coor->c.b = 0;
+		if (coor->z > 0)
+			coor->c.g	= 255;
+		else if (coor->z < 0)
+			coor->c.r	= 255;
+		else
+		{
+			coor->c.r = 255;
+			coor->c.g = 255;
+			coor->c.b = 255;
+		}
+	}
+	return (0);
+}
+
+int	ft_get_zc(t_coor *coor, char *line)
+{
+	int	r_count;
+
+	r_count = 0;
+	while (ft_isspace(*line) && *line)
+	{
+		r_count++;
+		line++;
+	}
+	coor->z = ft_atoi(line);
+	while (!ft_isspace(*line) && *line != 'x' && *line)
+	{
+		r_count++;
+		line++;
+	}
+	r_count += ft_get_color(coor, line);
+	return (r_count);
 }
 
 t_coor	*ft_get_colvalue(char *line, int nb_col, int y)
 {
 	t_coor	*r_value;
 	int		i;
-	int		k;
+	int		j;
 
 	i = 0;
-	k = 0;
 	r_value = (t_coor *)malloc(sizeof(t_coor) * nb_col);
 	if (!r_value)
 		exit(1);
@@ -50,17 +146,7 @@ t_coor	*ft_get_colvalue(char *line, int nb_col, int y)
 	{
 		r_value[i].x = i;
 		r_value[i].y = y;
-		r_value[i].z = ft_atoi(line);
-		if (r_value[i].z > 0)
-			r_value[i].c = 0x00F450;
-		else if (r_value[i].z < 0)
-			r_value[i].c = 0x0050F4;
-		else
-			r_value[i].c = 0xFFFFFF;
-		k = ft_inc(r_value[i].z);
-		line += k;
-		while (*line == ' ')
-			line++;
+		line += ft_get_zc(&r_value[i], line);
 		i++;
 	}
 	return (r_value);
