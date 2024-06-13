@@ -21,8 +21,8 @@ void	ft_putpxl(double x, double y, int c, t_data *data)
 
 	if (x >= WIDTH || y >= HEIGHT)
 		return ;
-	offset = ((data->ll * floor(y)) + (floor(x) * (data->bpp / 8)));
-	*((unsigned int *)(offset + data->img_ptr)) = c;
+	offset = ((data->ll * (int)(y)) + ((int)(x) * (data->bpp / 8)));
+	*((unsigned int *)(offset + data->img_ptr)) = create_trgb(get_t(c), 255, 255, 0);
 }
 
 void	ft_plotlinelow(t_coor s, t_coor e, t_data *data)

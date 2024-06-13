@@ -7,6 +7,7 @@ FILES		= \
 				ft_operator.c		\
 				ft_rotation.c		\
 				ft_fdf_event.c		\
+				ft_color.c			\
 				ft_modif.c
 
 OBJS		= $(FILES:%.c=./output/%.o)

@@ -23,6 +23,14 @@
 #  define WIDTH 1000
 # endif
 
+typedef struct s_color
+{
+	int	t;
+	int	r;
+	int	g;
+	int	b;
+}	t_color;
+
 typedef struct s_gap
 {
 	double	x;
@@ -81,6 +89,12 @@ void	ft_zoom_map(int keycode, t_map *map);
 void	ft_rotate_map(int keycode, t_map *map);
 int		ft_key_event(int keycode, t_window *w);
 
+/*--------------------- COLOR ---------------------*/
+int		get_t(int trgb);
+int		get_r(int trgb);
+int		get_g(int trgb);
+int		get_b(int trgb);
+int		create_trgb(int t, int r, int g, int b);
 
 /*--------------------- PARAMS ---------------------*/
 void	ft_show_map(t_map *map, int id);
