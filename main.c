@@ -22,6 +22,11 @@ void	ft_update_cgravity(t_map *map)
 	ft_op_add(&map->cgravity.z, &map->modif.gap.z);
 }
 
+int	ft_close(int keycode, t_window *w)
+{
+	ft_exit(w);
+}
+
 int	main(int argc, const char **argv)
 {
 	t_window	w;
@@ -33,6 +38,7 @@ int	main(int argc, const char **argv)
 	w.win = mlx_new_window(w.mlx, WIDTH, HEIGHT, "FDF ---");
 	if (!w.win)
 		ft_exit(&w);
+	mlx_hook(w.win, 17, 1L<<1, ft_close, &w);
 	mlx_hook(w.win, 2, 1L<<0, ft_key_event, &w);
 	ft_update_cgravity(w.map);
 	w.map->modif.zoom = 1;

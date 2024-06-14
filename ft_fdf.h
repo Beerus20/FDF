@@ -16,11 +16,11 @@
 # define ZOOM 2
 
 # ifndef HEIGHT
-#  define HEIGHT 800
+#  define HEIGHT 1000
 # endif
 
 # ifndef WIDTH
-#  define WIDTH 1000
+#  define WIDTH 1800
 # endif
 
 typedef struct s_color

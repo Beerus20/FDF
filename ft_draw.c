@@ -19,11 +19,21 @@ void	ft_putpxl(double x, double y, t_color c, t_data *data)
 {
 	int	offset;
 
-	if (x >= WIDTH || y >= HEIGHT)
+	if (x >= WIDTH || y >= HEIGHT || x <= 0 || y <= 0)
 		return ;
 	offset = ((data->ll * (int)(y)) + ((int)(x) * (data->bpp / 8)));
-	// printf("rgb	: [%d] [%d] [%d]\n", c.r, c.g, c.b);
 	*((unsigned int *)(offset + data->img_ptr)) = create_trgb(c);
+}
+
+t_color	ft_gradient(t_coor s, t_coor e)
+{
+	t_color	c;
+
+	c.t = 255;
+	c.r = (int)(ft_abs(e.c.r - s.c.r) / (e.x - s.x));
+	c.g = (int)(ft_abs(e.c.g - s.c.g) / (e.x - s.x));
+	c.b = (int)(ft_abs(e.c.b - s.c.b) / (e.x - s.x));
+	return (c);
 }
 
 void	ft_plotlinelow(t_coor s, t_coor e, t_data *data)

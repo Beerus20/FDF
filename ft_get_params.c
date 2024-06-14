@@ -58,11 +58,14 @@ int	ft_htoic(char *line)
 	int		r_value;
 	char	*tmp;
 
-	i = 6;
+	i = 0;
 	r_value = 0;
 	tmp = line;
-	// while (!ft_isspace(*tmp) && *tmp && i++)
-	// 	tmp++;
+	while (!ft_isspace(*tmp) && *tmp)
+	{
+		tmp++;
+		i++;
+	}
 	while (i-- >= 0 && !ft_isspace(*line))
 	{
 		r_value += ft_ctoi(*line) * ft_pow(16, i);
@@ -101,7 +104,7 @@ static int	ft_get_color(t_coor *coor, char *line)
 		if (coor->z > 0)
 			coor->c.g	= 255;
 		else if (coor->z < 0)
-			coor->c.r	= 255;
+			coor->c.b	= 255;
 		else
 		{
 			coor->c.r = 255;
@@ -174,6 +177,7 @@ t_map	*ft_get_coor(t_list *lines)
 		lines = lines->next;
 		i++;
 	}
+	
 	return (map);
 }
 
@@ -211,8 +215,11 @@ t_map	*ft_get_map(const char *file_name)
 	r_value = ft_get_coor(lines);
 	close(fd);
 	ft_lstclear(&lines, free);
-	r_value->modif.teta.x = 0;
-	r_value->modif.teta.y = 0;
-	r_value->modif.teta.z = 0;
+	r_value->modif.teta.x = 55;
+	r_value->modif.teta.y = 35;
+	r_value->modif.teta.z = -20;
+	r_value->modif.gap.x = (WIDTH / 2) - (r_value->col / 2);
+	r_value->modif.gap.y = (HEIGHT / 2) - (r_value->row / 2);
+	r_value->modif.gap.z = 1;
 	return (r_value);
 }
