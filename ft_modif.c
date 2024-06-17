@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_modif.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ballain <ballain@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/17 23:23:59 by ballain           #+#    #+#             */
+/*   Updated: 2024/06/17 23:23:59 by ballain          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_fdf.h"
 
 t_coor	ft_apply_modif(t_coor *cg, t_coor *e, t_modif *modif)
 {
-	t_coor r_value;
+	t_coor	r_value;
 
 	r_value.x = e->x;
 	r_value.y = e->y;

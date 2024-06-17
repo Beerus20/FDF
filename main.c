@@ -6,23 +6,11 @@
 /*   By: ballain <ballain@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 16:03:38 by ballain           #+#    #+#             */
-/*   Updated: 2024/06/17 16:03:40 by ballain          ###   ########.fr       */
+/*   Updated: 2024/06/17 23:24:38 by ballain          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "ft_fdf.h"
-
-void	ft_exit(t_window *w)
-{
-	ft_free_map(w->map);
-	mlx_destroy_image(w->mlx, w->data.img);
-	mlx_destroy_window(w->mlx, w->win);
-	mlx_destroy_display(w->mlx);
-	free(w->mlx);
-	exit(1);
-}
 
 void	ft_update_cgravity(t_map *map)
 {
@@ -34,9 +22,25 @@ void	ft_update_cgravity(t_map *map)
 	ft_op_add(&map->cgravity.z, &map->modif.gap.z);
 }
 
-int	ft_close(int keycode, t_window *w)
+int	ft_mouse_event(int x, int y, t_window *w)
 {
-	ft_exit(w);
+	if (w->a_mouse == 1)
+	{
+		w->map->modif.gap.x = x - ((w->map->col / 2) * w->map->modif.zoom);
+		w->map->modif.gap.y = y - ((w->map->row / 2) * w->map->modif.zoom);
+	}
+	if (w->a_mouse == 2)
+	{
+		w->map->modif.teta.x = w->map->cgravity.y - y;
+		w->map->modif.teta.y = x - w->map->cgravity.x;
+	}
+	if (w->a_mouse == 3)
+		w->map->modif.teta.z = w->map->cgravity.y - y;
+	if (w->a_mouse != 0)
+	{
+		ft_update_cgravity(w->map);
+		ft_draw_image(w);
+	}
 }
 
 int	main(int argc, const char **argv)
@@ -45,6 +49,7 @@ int	main(int argc, const char **argv)
 
 	w.map = ft_get_map(argv[1]);
 	w.mlx = mlx_init();
+	w.a_mouse = 0;
 	if (!w.mlx)
 		ft_exit(&w);
 	w.win = mlx_new_window(w.mlx, WIDTH, HEIGHT, "FDF ---");
@@ -52,8 +57,9 @@ int	main(int argc, const char **argv)
 		ft_exit(&w);
 	w.data.img = mlx_new_image(w.mlx, WIDTH, HEIGHT);
 	w.data.img_ptr = mlx_get_data_addr(w.data.img, &w.data.bpp, &w.data.ll, &w.data.e);
-	mlx_hook(w.win, 17, 1L << 1, ft_close, &w);
+	mlx_hook(w.win, 17, 1L << 0, ft_close, &w);
 	mlx_hook(w.win, 2, 1L << 0, ft_key_event, &w);
+	mlx_hook(w.win, 6, 1L << 6, ft_mouse_event, &w);
 	ft_update_cgravity(w.map);
 	w.map->modif.zoom = 1;
 	ft_draw_image(&w);

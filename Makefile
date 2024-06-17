@@ -3,10 +3,14 @@ FILES		= \
 				main.c				\
 				ft_show_map.c		\
 				ft_get_params.c		\
+				ft_plotline.c		\
 				ft_draw.c			\
 				ft_operator.c		\
 				ft_rotation.c		\
 				ft_fdf_event.c		\
+				ft_fdf_init.c		\
+				ft_fdf_utils.c		\
+				ft_fdf_free.c		\
 				ft_color.c			\
 				ft_modif.c
 
@@ -15,8 +19,9 @@ CC			= gcc -g
 CFLAGS		= -Wall -Wextra -Werror
 LIBX_FLAGS	= -lXext -lX11 -lm -lz
 
+
 #LIB
-P_MINILIBX	= ./minilibx
+P_MINILIBX	= ./minilibx-linux
 P_GNL		= ./gnl
 P_LIBFT		= ./libft
 P_PRINTF	= ./printf

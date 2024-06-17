@@ -1,14 +1,13 @@
 #ifndef FT_FDF_H
 # define FT_FDF_H
 
-# include <stdio.h>
 # include <stdlib.h>
 # include <fcntl.h>
 # include <math.h>
 # include "./gnl/get_next_line.h"
 # include "./libft/libft.h"
 # include "./printf/includes/ft_printf.h"
-# include "./minilibx/mlx.h"
+# include "./minilibx-linux/mlx.h"
 
 # define PI 3.1415926535897932385
 # define DEG 5
@@ -77,11 +76,23 @@ typedef struct s_window
 	void	*win;
 	t_map	*map;
 	t_data	data;
+	int		a_mouse;
 }	t_window;
 
 t_map	*ft_get_map(const char *file_name);
-int		ft_abs(int value);
 void	ft_update_cgravity(t_map *map);
+
+/*--------------------- INIT ---------------------*/
+void	ft_init_modif(t_map *map, int col, int row);
+t_color	ft_init_color(int color);
+
+/*--------------------- UTILS ---------------------*/
+int		ft_abs(int value);
+int		ft_pow(int value, int n);
+int		ft_ctoi(char c);
+int		ft_htoic(char *line);
+int		ft_get_color(t_coor *coor, char *line);
+
 /*--------------------- EVENT ---------------------*/
 void	ft_move_map(int keycode, t_map *map);
 void	ft_zoom_map(int keycode, t_map *map);
@@ -99,6 +110,12 @@ int		create_trgb(t_color c);
 void	ft_show_map(t_map *map, int id);
 void	ft_show_coor(t_map *map);
 void	ft_show_element(t_map *map);
+
+/*--------------------- PLOTLINE ---------------------*/
+void	ft_putpxl(double x, double y, t_color c, t_data *data);
+t_color	ft_gradient(t_coor s, t_coor e, int dist);
+void	ft_plotlinelow(t_coor s, t_coor e, t_data *data);
+void	ft_plotlinehigh(t_coor s, t_coor e, t_data *data);
 
 /*--------------------- ROTATION ---------------------*/
 double	ft_linear_combinaison(double a, double b, int teta);
@@ -123,4 +140,5 @@ void	ft_op_div(double *a, double *b);
 /*--------------------- FREE ---------------------*/
 void	ft_exit(t_window *w);
 void	ft_free_map(t_map *map);
+int		ft_close(int keycode, t_window *w);
 #endif

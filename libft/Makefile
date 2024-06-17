@@ -14,7 +14,7 @@ FILES	= \
 	ft_lstclear_bonus.c      ft_putstr_fd.c      ft_tolower.c		\
 	ft_lstdelone_bonus.c     ft_split.c          ft_toupper.c		\
 	ft_lstiter_bonus.c       ft_strchr.c         ft_lstlast_bonus.c	\
-	ft_strdup.c
+	ft_strdup.c				 ft_isspace.c
 
 OBJS	= $(FILES:%.c=./output/%.o)
 CFLAGS	= -Wall -Wextra -Werror

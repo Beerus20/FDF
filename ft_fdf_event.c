@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_fdf_event.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ballain <ballain@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/17 23:22:50 by ballain           #+#    #+#             */
+/*   Updated: 2024/06/17 23:22:51 by ballain          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_fdf.h"
 
-void	ft_ajust_value(double *value, double add, void (*ft)(double *, double *))
+void	ft_ajust_value(double *v, double add, void (*ft)(double *, double *))
 {
-	ft(value, &add);
-	if (ft_abs(*value) == 360)
-		*value = 0;
+	ft(v, &add);
+	if (ft_abs(*v) >= 360)
+		*v = 0;
 }
 
 void	ft_move_map(int keycode, t_map *map)
@@ -49,9 +61,22 @@ void	ft_rotate_map(int keycode, t_map *map)
 
 int	ft_key_event(int keycode, t_window *w)
 {
-	ft_update_cgravity(w->map);
+	while ((int)w->map->modif.teta.x % GAP != 0)
+		w->map->modif.teta.x++;
+	while ((int)w->map->modif.teta.y % GAP != 0)
+		w->map->modif.teta.y++;
+	while ((int)w->map->modif.teta.z % GAP != 0)
+		w->map->modif.teta.z++;
 	if (keycode == 65307)
 		ft_exit(w);
+	if (keycode == 'p')
+		w->a_mouse = 0;
+	if (keycode == 'm')
+		w->a_mouse = 1;
+	if (keycode == 'l')
+		w->a_mouse = 2;
+	if (keycode == 'o')
+		w->a_mouse = 3;
 	ft_move_map(keycode, w->map);
 	ft_zoom_map(keycode, w->map);
 	ft_rotate_map(keycode, w->map);

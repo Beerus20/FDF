@@ -6,7 +6,7 @@
 /*   By: ballain <ballain@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 20:34:20 by ballain           #+#    #+#             */
-/*   Updated: 2024/05/31 22:53:11 by ballain          ###   ########.fr       */
+/*   Updated: 2024/06/17 23:09:06 by ballain          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int		ft_isalpha(int c);
 int		ft_isascii(int c);
 int		ft_isdigit(int c);
 int		ft_isprint(int c);
+int		ft_isspace(int c);
 
 /*------------------ STR ------------------*/
 size_t	ft_strlen(const char *s);

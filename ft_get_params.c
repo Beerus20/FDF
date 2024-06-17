@@ -1,11 +1,16 @@
-#include "ft_fdf.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_get_params.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ballain <ballain@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/17 23:42:29 by ballain           #+#    #+#             */
+/*   Updated: 2024/06/17 23:46:11 by ballain          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static int	ft_isspace(const int c)
-{
-	if ((c >= 9 && c <= 13) || c == 32)
-		return (1);
-	return (0);
-}
+#include "ft_fdf.h"
 
 int	ft_get_nbcol(char *line)
 {
@@ -24,95 +29,6 @@ int	ft_get_nbcol(char *line)
 			line++;
 	}
 	return (r_value);
-}
-
-int	ft_pow(int value, int n)
-{
-	int	r_value;
-
-	r_value = 1;
-	while (n > 0)
-	{
-		if (n % 2 == 1)
-			r_value *= value;
-		value *= value;
-		n /= 2;
-	}
-	return (r_value);
-}
-
-int	ft_ctoi(char c)
-{
-	if (ft_isdigit(c))
-		return (c - '0');
-	if (c >= 'A' && c <= 'F')
-		return (c - '7');
-	if (c >= 'a' && c <= 'f')
-		return (c - 'W');
-	return (0);
-}
-
-int	ft_htoic(char *line)
-{
-	int		i;
-	int		r_value;
-	char	*tmp;
-
-	i = 0;
-	r_value = 0;
-	tmp = line;
-	while (!ft_isspace(*tmp) && *tmp)
-	{
-		tmp++;
-		i++;
-	}
-	while (i-- >= 0 && !ft_isspace(*line))
-	{
-		r_value += ft_ctoi(*line) * ft_pow(16, i);
-		line++;
-	}
-	return (r_value);
-}
-
-static int	ft_get_color(t_coor *coor, char *line)
-{
-	int	color;
-	int	r_value;
-
-	coor->c.t = 0;
-	r_value = 1;
-	if (*line == 'x')
-	{
-		line++;
-		color = ft_htoic(line);
-		coor->c.t = ft_get_t(color);
-		coor->c.r = ft_get_r(color);
-		coor->c.g = ft_get_g(color);
-		coor->c.b = ft_get_b(color);
-		while (!ft_isspace(*line))
-		{
-			r_value++;
-			line++;
-		}
-		return (r_value);
-	}
-	else if (ft_isspace(*line))
-	{
-		coor->c.r = 0;
-		coor->c.g = 0;
-		coor->c.b = 0;
-		if (coor->z > 0)
-			coor->c.g	= 255;
-		else if (coor->z < 0)
-			coor->c.b	= 255;
-		else
-		{
-			coor->c.r = 255;
-			coor->c.g = 255;
-			coor->c.b = 255;
-		}
-	}
-	return (0);
 }
 
 int	ft_get_zc(t_coor *coor, char *line)
@@ -180,47 +96,29 @@ t_map	*ft_get_coor(t_list *lines)
 	return (map);
 }
 
-void	ft_free_map(t_map *map)
-{
-	int	i;
-
-	i = 0;
-	while (i < map->row)
-	{
-		free(map->coor[i]);
-		i++;
-	}
-	free(map->coor);
-	free(map);
-}
-
-void	ft_init_modif(t_map *map, int col, int row)
-{
-	map->modif.teta.x = 55;
-	map->modif.teta.y = 35;
-	map->modif.teta.z = -20;
-	map->modif.gap.x = (WIDTH / 2) - (col / 2);
-	map->modif.gap.y = (HEIGHT / 2) - (row / 2);
-	map->modif.gap.z = 1;
-	map->modif.zoom = 1;
-}
-
 t_map	*ft_get_map(const char *file_name)
 {
 	t_map	*r_value;
 	t_list	*lines;
 	char	*line;
 	int		fd;
+	int		nb_col;
 
 	fd = open(file_name, O_RDONLY);
 	if (fd == -1)
 		exit(1);
 	lines = NULL;
 	line = get_next_line(fd);
+	nb_col = ft_get_nbcol(line);
 	while (line)
 	{
 		ft_lstadd_back(&lines, ft_lstnew(line));
 		line = get_next_line(fd);
+		if (nb_col != ft_ft_get_nbcolget_color(line))
+		{
+			ft_lstclear(&lines, free);
+			exit(0);
+		}
 	}
 	r_value = ft_get_coor(lines);
 	close(fd);
