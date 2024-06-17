@@ -50,12 +50,12 @@ int	ft_get_len_gnl(t_list *value)
 
 	i = 0;
 	len = 0;
-	while (!ft_strchr(value->content, '\n') && value->next)
+	while (!ft_strchr_gnl(value->content, '\n') && value->next)
 	{
 		len += ft_strlen_gnl(value->content);
 		value = value->next;
 	}
-	if (ft_strchr(value->content, '\n'))
+	if (ft_strchr_gnl(value->content, '\n'))
 	{
 		while (value->content[i++] != '\n')
 			;

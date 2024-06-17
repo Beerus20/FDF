@@ -177,7 +177,6 @@ t_map	*ft_get_coor(t_list *lines)
 		lines = lines->next;
 		i++;
 	}
-	
 	return (map);
 }
 
@@ -220,13 +219,12 @@ t_map	*ft_get_map(const char *file_name)
 	line = get_next_line(fd);
 	while (line)
 	{
-		// ft_lstadd_back(&lines, ft_lstnew(line));
-		printf("%s ", line);
+		ft_lstadd_back(&lines, ft_lstnew(line));
 		line = get_next_line(fd);
 	}
-	// r_value = ft_get_coor(lines);
-	// close(fd);
-	// ft_lstclear(&lines, free);
-	// ft_init_modif(r_value, r_value->col, r_value->row);
+	r_value = ft_get_coor(lines);
+	close(fd);
+	ft_lstclear(&lines, free);
+	ft_init_modif(r_value, r_value->col, r_value->row);
 	return (r_value);
 }

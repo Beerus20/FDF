@@ -45,11 +45,14 @@ run\:%			: all
 					./fdf maps/$(subst run:,,$@).fdf
 
 $(NAME)			: $(OBJS)
-					make -C $(P_MINILIBX) && make -C $(P_GNL) && make -C $(P_LIBFT) && make -C $(P_PRINTF)
+					make -C $(P_MINILIBX) &&\
+					make -C $(P_GNL) &&\
+					make -C $(P_LIBFT) &&\
+					make -C $(P_PRINTF)
 					$(CC) $(OBJS) $(MINILIBX) $(GNL) $(LIBFT) $(PRINTF) $(LIBX_FLAGS) -o $@
 
 norme			:
-					norminette $(P_GNL) $(P_LIBFT) $(P_PRINTF)
+					norminette $(P_GNL) $(P_LIBFT) $(P_PRINTF) $(FILES)
 
 clean			:
 					make clean -C $(P_MINILIBX)
