@@ -6,13 +6,13 @@
 /*   By: ballain <ballain@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 21:02:37 by ballain           #+#    #+#             */
-/*   Updated: 2024/05/31 23:08:47 by ballain          ###   ########.fr       */
+/*   Updated: 2024/04/03 10:54:02 by ballain          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_put_value(char *receiver, char *to_add, char stop)
+int	ft_add_value_gnl(char *receiver, char *to_add, char stop)
 {
 	int	i;
 
@@ -41,7 +41,7 @@ int	ft_get_file_content(int fd, t_list **list)
 	buffer = ft_alloc(NULL, BUFFER_SIZE);
 	if (!buffer)
 		return (0);
-	while (!ft_strchr(buffer, '\n'))
+	while (!ft_strchr_gnl(buffer, '\n'))
 	{
 		size = read(fd, buffer, BUFFER_SIZE);
 		if (size == -1 || size == 0)
@@ -65,24 +65,24 @@ char	*ft_get_line(t_list *value, char **rest)
 	int		i;
 
 	i = 0;
-	r_value = ft_alloc(NULL, ft_getlen(value));
+	r_value = ft_alloc(NULL, ft_get_len_gnl(value));
 	if (!r_value)
 		return (NULL);
 	i = 0;
-	while (!ft_strchr(value->content, '\n') && value->next)
+	while (!ft_strchr_gnl(value->content, '\n') && value->next)
 	{
-		i += ft_put_value(&r_value[i], value->content, '\0');
+		i += ft_add_value_gnl(&r_value[i], value->content, '\0');
 		value = value->next;
 	}
-	if (ft_strchr(value->content, '\n'))
+	if (ft_strchr_gnl(value->content, '\n'))
 	{
-		i = ft_put_value(&r_value[i], value->content, '\n');
-		if ((ft_strlen(value->content) - i) != 0)
+		i = ft_add_value_gnl(&r_value[i], value->content, '\n');
+		if ((ft_strlen_gnl(value->content) - i) != 0)
 		{
-			*rest = ft_alloc(NULL, ft_strlen(value->content) - i);
+			*rest = ft_alloc(NULL, ft_strlen_gnl(value->content) - i);
 			if (!(*rest))
 				return (NULL);
-			ft_put_value((*rest), &value->content[i], '\0');
+			ft_add_value_gnl((*rest), &value->content[i], '\0');
 		}
 	}
 	return (r_value);
@@ -95,12 +95,12 @@ int	ft_init(t_list **value, char **rest)
 		return (0);
 	(*value)->content = NULL;
 	(*value)->next = NULL;
-	if (*rest && ft_strlen(*rest))
+	if (*rest && ft_strlen_gnl(*rest))
 	{
 		(*value)->content = ft_alloc(*rest, 0);
 		free(*rest);
 		*rest = NULL;
-		if (ft_strchr((*value)->content, '\n'))
+		if (ft_strchr_gnl((*value)->content, '\n'))
 			return (0);
 		(*value)->next = (t_list *)malloc(sizeof(t_list));
 		if (!(*value)->next)
@@ -139,4 +139,6 @@ char	*get_next_line(int fd)
 	ft_free(value);
 	return (line);
 }
-
+/*
+*	faire en sorte que le rest soit static mais que la list ne le soit pas
+ */

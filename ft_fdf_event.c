@@ -1,5 +1,12 @@
 #include "ft_fdf.h"
 
+void	ft_ajust_value(double *value, double add, void (*ft)(double *, double *))
+{
+	ft(value, &add);
+	if (ft_abs(*value) == 360)
+		*value = 0;
+}
+
 void	ft_move_map(int keycode, t_map *map)
 {
 	if (keycode == 65361)
@@ -18,26 +25,26 @@ void	ft_move_map(int keycode, t_map *map)
 
 void	ft_zoom_map(int keycode, t_map *map)
 {
-	if (keycode == 'a')
+	if (keycode == 'a' && (map->modif.zoom / ZOOM) > 0)
 		map->modif.zoom /= ZOOM;
-	if (keycode == 'z')
+	if (keycode == 'z' && (map->modif.zoom * ZOOM) <= 1024)
 		map->modif.zoom *= ZOOM;
 }
 
 void	ft_rotate_map(int keycode, t_map *map)
 {
 	if (keycode == 't')
-		map->modif.teta.x += DEG;
+		ft_ajust_value(&map->modif.teta.x, DEG, ft_op_add);
 	if (keycode == 'g')
-		map->modif.teta.x -= DEG;
+		ft_ajust_value(&map->modif.teta.x, DEG, ft_op_sub);
 	if (keycode == 'r')
-		map->modif.teta.y += DEG;
+		ft_ajust_value(&map->modif.teta.y, DEG, ft_op_add);
 	if (keycode == 'f')
-		map->modif.teta.y -= DEG;
+		ft_ajust_value(&map->modif.teta.y, DEG, ft_op_sub);
 	if (keycode == 'e')
-		map->modif.teta.z += DEG;
+		ft_ajust_value(&map->modif.teta.z, DEG, ft_op_add);
 	if (keycode == 'd')
-		map->modif.teta.z -= DEG;
+		ft_ajust_value(&map->modif.teta.z, DEG, ft_op_sub);
 }
 
 int	ft_key_event(int keycode, t_window *w)

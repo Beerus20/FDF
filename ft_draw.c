@@ -7,14 +7,6 @@ int	ft_abs(int value)
 	return (value);
 }
 
-void	ft_init_coor(t_coor *coor, int x, int y, int z)
-{
-	coor->x = x;
-	coor->y = y;
-	coor->z = z;
-	// coor->c = 0;
-}
-
 void	ft_putpxl(double x, double y, t_color c, t_data *data)
 {
 	int	offset;
@@ -25,15 +17,24 @@ void	ft_putpxl(double x, double y, t_color c, t_data *data)
 	*((unsigned int *)(offset + data->img_ptr)) = create_trgb(c);
 }
 
-t_color	ft_gradient(t_coor s, t_coor e)
+t_color	ft_gradient(t_coor s, t_coor e, int dist)
 {
-	t_color	c;
+	t_color		c;
+	static int	i = 0;
 
-	c.t = 255;
-	c.r = (int)(ft_abs(e.c.r - s.c.r) / (e.x - s.x));
-	c.g = (int)(ft_abs(e.c.g - s.c.g) / (e.x - s.x));
-	c.b = (int)(ft_abs(e.c.b - s.c.b) / (e.x - s.x));
-	return (c);
+	if (dist)
+	{
+		c.t = 255;
+		c.r = (((dist - i) * s.c.r / dist)) + ((i * e.c.r / dist));
+		c.g = (((dist - i) * s.c.g / dist)) + ((i * e.c.g / dist));
+		c.b = (((dist - i) * s.c.b / dist)) + ((i * e.c.b / dist));
+		if (i >= dist)
+			i = 0;
+		else
+			i++;
+		return (c);
+	}
+	return (e.c);
 }
 
 void	ft_plotlinelow(t_coor s, t_coor e, t_data *data)
@@ -54,7 +55,7 @@ void	ft_plotlinelow(t_coor s, t_coor e, t_data *data)
 	D = (2 * dy) - dx;
 	while (s.x++ < e.x)
 	{
-		ft_putpxl(s.x, s.y, e.c, data);
+		ft_putpxl(s.x, s.y, ft_gradient(s, e, dx), data);
 		if (D > 0)
 		{
 			s.y += yi;
@@ -83,7 +84,7 @@ void	ft_plotlinehigh(t_coor s, t_coor e, t_data *data)
 	D = (2 * dx) - dy;
 	while (s.y++ < e.y)
 	{
-		ft_putpxl(s.x, s.y, e.c, data);
+		ft_putpxl(s.x, s.y, ft_gradient(s, e, dy), data);
 		if (D > 0)
 		{
 			s.x += xi;
@@ -129,13 +130,38 @@ void	ft_draw(int i, int j, t_map *map, t_data *data)
 	ft_plotline(prev, next, data);
 }
 
-t_data	ft_init_data(void *mlx)
+t_data	ft_init_data(t_window *w)
 {
 	t_data	data;
 
-	data.img = mlx_new_image(mlx, WIDTH, HEIGHT);
+	mlx_destroy_image(w->mlx, w->data.img);
+	data.img = mlx_new_image(w->mlx, WIDTH, HEIGHT);
 	data.img_ptr = mlx_get_data_addr(data.img, &data.bpp, &data.ll, &data.e);
 	return (data);
+}
+
+int	ft_draw_string(t_window *w, int y, char *name, char *value)
+{
+	mlx_string_put(w->mlx, w->win, WIDTH - 120, y, 0xFFFFFF, name);
+	mlx_string_put(w->mlx, w->win, WIDTH - 50, y, 0xFF0000, value);
+	free(value);
+	return (20);
+}
+
+void	ft_draw_info(t_window *w)
+{
+	int	y;
+
+	y = 20;
+	y += ft_draw_string(w, y, "WIDTH   : ", ft_itoa(WIDTH));
+	y += ft_draw_string(w, y, "HEIGHT  : ", ft_itoa(HEIGHT));
+	y += ft_draw_string(w, y, "ZOOM    : ", ft_itoa(w->map->modif.zoom / ZOOM));
+	y += ft_draw_string(w, y, "pos x   : ", ft_itoa(w->map->modif.gap.x));
+	y += ft_draw_string(w, y, "pos y   : ", ft_itoa(w->map->modif.gap.y));
+	y += ft_draw_string(w, y, "Teta x  : ", ft_itoa(w->map->modif.teta.x));
+	y += ft_draw_string(w, y, "Teta y  : ", ft_itoa(w->map->modif.teta.y));
+	y += ft_draw_string(w, y, "Teta z  : ", ft_itoa(w->map->modif.teta.z));
+
 }
 
 void	ft_draw_image(t_window *w)
@@ -144,7 +170,7 @@ void	ft_draw_image(t_window *w)
 	int		j;
 
 	j = 0;
-	w->data = ft_init_data(w->mlx);
+	w->data = ft_init_data(w);
 	while (j < w->map->row)
 	{
 		i = 0;
@@ -156,4 +182,5 @@ void	ft_draw_image(t_window *w)
 		j++;
 	}
 	mlx_put_image_to_window(w->mlx, w->win, w->data.img, 0, 0);
+	ft_draw_info(w);
 }

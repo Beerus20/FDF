@@ -195,6 +195,17 @@ void	ft_free_map(t_map *map)
 	free(map);
 }
 
+void	ft_init_modif(t_map *map, int col, int row)
+{
+	map->modif.teta.x = 55;
+	map->modif.teta.y = 35;
+	map->modif.teta.z = -20;
+	map->modif.gap.x = (WIDTH / 2) - (col / 2);
+	map->modif.gap.y = (HEIGHT / 2) - (row / 2);
+	map->modif.gap.z = 1;
+	map->modif.zoom = 1;
+}
+
 t_map	*ft_get_map(const char *file_name)
 {
 	t_map	*r_value;
@@ -209,17 +220,13 @@ t_map	*ft_get_map(const char *file_name)
 	line = get_next_line(fd);
 	while (line)
 	{
-		ft_lstadd_back(&lines, ft_lstnew(line));
+		// ft_lstadd_back(&lines, ft_lstnew(line));
+		printf("%s ", line);
 		line = get_next_line(fd);
 	}
-	r_value = ft_get_coor(lines);
-	close(fd);
-	ft_lstclear(&lines, free);
-	r_value->modif.teta.x = 55;
-	r_value->modif.teta.y = 35;
-	r_value->modif.teta.z = -20;
-	r_value->modif.gap.x = (WIDTH / 2) - (r_value->col / 2);
-	r_value->modif.gap.y = (HEIGHT / 2) - (r_value->row / 2);
-	r_value->modif.gap.z = 1;
+	// r_value = ft_get_coor(lines);
+	// close(fd);
+	// ft_lstclear(&lines, free);
+	// ft_init_modif(r_value, r_value->col, r_value->row);
 	return (r_value);
 }

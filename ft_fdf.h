@@ -51,7 +51,6 @@ typedef struct s_modif
 	int		zoom;
 	t_gap	gap;
 	t_gap	teta;
-	void	(*action);
 }	t_modif;
 
 typedef struct s_map
