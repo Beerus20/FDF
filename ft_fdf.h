@@ -79,12 +79,20 @@ typedef struct s_window
 	int		a_mouse;
 }	t_window;
 
-t_map	*ft_get_map(const char *file_name);
-void	ft_update_cgravity(t_map *map);
 
 /*--------------------- INIT ---------------------*/
+int		ft_init_map_error(t_list *lines);
 void	ft_init_modif(t_map *map, int col, int row);
 t_color	ft_init_color(int color);
+
+/*--------------------- FUNCTIONS SUP ---------------------*/
+void	ft_update_cgravity(t_map *map);
+int		ft_mouse_event(int x, int y, t_window *w);
+int		ft_scroll_wheel(int button_id, int x, int y, t_window *w);
+
+/*--------------------- PARAMS ---------------------*/
+int		ft_get_nbcol(char *line);
+t_map	*ft_get_map(const char *file_name);
 
 /*--------------------- UTILS ---------------------*/
 int		ft_abs(int value);
@@ -106,7 +114,7 @@ int		ft_get_g(int trgb);
 int		ft_get_b(int trgb);
 int		create_trgb(t_color c);
 
-/*--------------------- PARAMS ---------------------*/
+/*--------------------- SHOW ---------------------*/
 void	ft_show_map(t_map *map, int id);
 void	ft_show_coor(t_map *map);
 void	ft_show_element(t_map *map);

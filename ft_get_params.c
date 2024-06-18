@@ -6,7 +6,7 @@
 /*   By: ballain <ballain@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 23:42:29 by ballain           #+#    #+#             */
-/*   Updated: 2024/06/17 23:46:11 by ballain          ###   ########.fr       */
+/*   Updated: 2024/06/18 13:02:16 by ballain          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,14 @@ int	ft_get_nbcol(char *line)
 	{
 		while (!ft_isspace(*line) && *line)
 			line++;
+		if (*line == 10 || !(*line))
+			break ;
 		if (ft_isspace(*line))
 			r_value++;
 		while (ft_isspace(*line))
 			line++;
 	}
-	return (r_value);
+	return (r_value + 1);
 }
 
 int	ft_get_zc(t_coor *coor, char *line)
@@ -102,24 +104,19 @@ t_map	*ft_get_map(const char *file_name)
 	t_list	*lines;
 	char	*line;
 	int		fd;
-	int		nb_col;
 
 	fd = open(file_name, O_RDONLY);
 	if (fd == -1)
-		exit(1);
+		exit(0);
 	lines = NULL;
 	line = get_next_line(fd);
-	nb_col = ft_get_nbcol(line);
 	while (line)
 	{
 		ft_lstadd_back(&lines, ft_lstnew(line));
 		line = get_next_line(fd);
-		if (nb_col != ft_ft_get_nbcolget_color(line))
-		{
-			ft_lstclear(&lines, free);
-			exit(0);
-		}
 	}
+	if (ft_init_map_error(lines))
+		exit(0);
 	r_value = ft_get_coor(lines);
 	close(fd);
 	ft_lstclear(&lines, free);

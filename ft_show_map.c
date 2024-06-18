@@ -6,20 +6,48 @@
 /*   By: ballain <ballain@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 23:27:27 by ballain           #+#    #+#             */
-/*   Updated: 2024/06/17 23:27:31 by ballain          ###   ########.fr       */
+/*   Updated: 2024/06/18 11:32:39 by ballain          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_fdf.h"
 
-void	ft_show_map(t_map *map, int id)
+void	ft_show_params(t_map *map, int id, int z)
 {
 	int	i;
 	int	j;
+
+	j = -1;
+	while (++j < map->row)
+	{
+		i = 0;
+		ft_printf(" %3d |", j);
+		while (i < map->col)
+		{
+			if (id == 0)
+				z = map->coor[j][i++].z;
+			if (id == 1)
+				z = map->coor[j][i++].x;
+			if (id == 2)
+				z = map->coor[j][i++].y;
+			if (map->coor[j][i].z > 0)
+				ft_printf("\033[0;32m%3d\033[0;0m", z);
+			else if (z < 0)
+				ft_printf("\033[0;31m%3d\033[0;0m", z);
+			else
+				ft_printf("%3d", z);
+		}
+		ft_printf("\n");
+	}
+}
+
+void	ft_show_map(t_map *map, int id)
+{
+	int	i;
 	int	z;
 
-	j = 0;
 	i = 0;
+	z = 0;
 	ft_printf("COOR	: row [%d] - col [%d]\n%6s", map->row, map->col, "");
 	while (i < map->col)
 	{
@@ -34,29 +62,7 @@ void	ft_show_map(t_map *map, int id)
 		i++;
 	}
 	ft_printf("\n");
-	while (j < map->row)
-	{
-		i = 0;
-		ft_printf(" %3d |", j);
-		while (i < map->col)
-		{
-			if (id == 0)
-				z = map->coor[j][i].z;
-			if (id == 1)
-				z = map->coor[j][i].x;
-			if (id == 2)
-				z = map->coor[j][i].y;
-			if (map->coor[j][i].z > 0)
-				ft_printf("\033[0;32m%3d\033[0;0m", z);
-			else if (z < 0)
-				ft_printf("\033[0;31m%3d\033[0;0m", z);
-			else
-				ft_printf("%3d", z);
-			i++;
-		}
-		ft_printf("\n");
-		j++;
-	}
+	ft_show_params(map, id, z);
 }
 
 void	ft_show_element(t_map *map)

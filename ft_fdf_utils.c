@@ -6,7 +6,7 @@
 /*   By: ballain <ballain@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 23:21:48 by ballain           #+#    #+#             */
-/*   Updated: 2024/06/17 23:42:32 by ballain          ###   ########.fr       */
+/*   Updated: 2024/06/18 13:08:38 by ballain          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	ft_get_color(t_coor *coor, char *line)
 	int	r_value;
 
 	r_value = 1;
+	color = ft_htoic("FFFFFF");
 	if (*line == 'x')
 	{
 		line++;
@@ -82,14 +83,12 @@ int	ft_get_color(t_coor *coor, char *line)
 			r_value++;
 		return (r_value);
 	}
-	else if (ft_isspace(*line))
+	else if (ft_isspace(*line) || !(*line))
 	{
 		if (coor->z > 0)
 			color = ft_htoic("00FF00");
-		else if (coor->z < 0)
+		if (coor->z < 0)
 			color = ft_htoic("0000FF");
-		else
-			color = ft_htoic("FFFFFF");
 		coor->c = ft_init_color(color);
 	}
 	return (0);

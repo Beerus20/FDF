@@ -12,7 +12,7 @@ FILES		= \
 				ft_fdf_utils.c		\
 				ft_fdf_free.c		\
 				ft_color.c			\
-				ft_modif.c
+				ft_fdf_functions.c
 
 OBJS		= $(FILES:%.c=./output/%.o)
 CC			= gcc -g
