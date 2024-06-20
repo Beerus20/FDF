@@ -6,7 +6,7 @@
 /*   By: ballain <ballain@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 23:42:48 by ballain           #+#    #+#             */
-/*   Updated: 2024/06/18 11:21:34 by ballain          ###   ########.fr       */
+/*   Updated: 2024/06/20 19:19:01 by ballain          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	ft_map_col_error(t_list *lines, int error[2])
 	t_list	*tmp;
 	int		nb_col;
 	int		nb_tmp;
-	int		i;
 
 	error[0] = 0;
 	error[1] = 0;

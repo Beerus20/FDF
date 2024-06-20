@@ -38,7 +38,7 @@ output			:
 					fi
 
 ./output/%.o	: %.c | output
-					$(CC)  -c $< -o $@
+					$(CC) $(CFLAGS) -c $< -o $@
 
 test\:%			: all
 					valgrind --leak-check=full --track-origins=yes ./fdf maps/$(subst test:,,$@).fdf
@@ -54,7 +54,7 @@ $(NAME)			: $(OBJS)
 					make -C $(P_GNL) &&\
 					make -C $(P_LIBFT) &&\
 					make -C $(P_PRINTF)
-					$(CC) $(OBJS) $(MINILIBX) $(GNL) $(LIBFT) $(PRINTF) $(LIBX_FLAGS) -o $@
+					$(CC) $(CFLAGS) $(OBJS) $(MINILIBX) $(GNL) $(LIBFT) $(PRINTF) $(LIBX_FLAGS) -o $@
 
 norme			:
 					norminette $(P_GNL) $(P_LIBFT) $(P_PRINTF) $(FILES)

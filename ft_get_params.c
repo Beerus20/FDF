@@ -6,7 +6,7 @@
 /*   By: ballain <ballain@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 23:42:29 by ballain           #+#    #+#             */
-/*   Updated: 2024/06/18 13:02:16 by ballain          ###   ########.fr       */
+/*   Updated: 2024/06/20 19:36:47 by ballain          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,17 @@ int	ft_get_nbcol(char *line)
 	int	r_value;
 
 	r_value = 0;
-	while (ft_isspace(*line))
-		line++;
 	while (*line)
 	{
+		while (ft_isspace(*line) && *line)
+			line++;
+		if (!(*line))
+			break ;
+		r_value++;
 		while (!ft_isspace(*line) && *line)
 			line++;
-		if (*line == 10 || !(*line))
-			break ;
-		if (ft_isspace(*line))
-			r_value++;
-		while (ft_isspace(*line))
-			line++;
 	}
-	return (r_value + 1);
+	return (r_value);
 }
 
 int	ft_get_zc(t_coor *coor, char *line)
@@ -57,7 +54,6 @@ t_coor	*ft_get_colvalue(char *line, int nb_col, int y)
 {
 	t_coor	*r_value;
 	int		i;
-	int		j;
 
 	i = 0;
 	r_value = (t_coor *)malloc(sizeof(t_coor) * nb_col);
@@ -76,8 +72,6 @@ t_coor	*ft_get_colvalue(char *line, int nb_col, int y)
 t_map	*ft_get_coor(t_list *lines)
 {
 	t_map	*map;
-	int		col;
-	int		row;
 	int		i;
 
 	i = 0;

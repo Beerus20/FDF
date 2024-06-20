@@ -6,7 +6,7 @@
 /*   By: ballain <ballain@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 23:21:33 by ballain           #+#    #+#             */
-/*   Updated: 2024/06/17 23:21:34 by ballain          ###   ########.fr       */
+/*   Updated: 2024/06/20 19:20:00 by ballain          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,7 @@ void	ft_free_map(t_map *map)
 
 int	ft_close(int keycode, t_window *w)
 {
+	(void)keycode;
 	ft_exit(w);
+	return (0);
 }

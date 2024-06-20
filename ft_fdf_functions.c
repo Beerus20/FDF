@@ -6,7 +6,7 @@
 /*   By: ballain <ballain@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 23:23:59 by ballain           #+#    #+#             */
-/*   Updated: 2024/06/18 11:32:59 by ballain          ###   ########.fr       */
+/*   Updated: 2024/06/20 19:22:00 by ballain          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int	ft_mouse_event(int x, int y, t_window *w)
 
 int	ft_scroll_wheel(int button_id, int x, int y, t_window *w)
 {
+	(void)x;
+	(void)y;
 	if (button_id == 4)
 		ft_zoom_map('z', w->map);
 	if (button_id == 5)

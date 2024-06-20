@@ -6,16 +6,26 @@
 /*   By: ballain <ballain@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 16:03:38 by ballain           #+#    #+#             */
-/*   Updated: 2024/06/18 11:28:53 by ballain          ###   ########.fr       */
+/*   Updated: 2024/06/20 19:40:35 by ballain          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_fdf.h"
 
+void	ft_arg_error(int argc)
+{
+	if (argc >= 3 || argc == 1)
+	{
+		ft_printf("\033[0;31mARG ERROR ...\033[0;0m\n");
+		exit(0);
+	}
+}
+
 int	main(int argc, const char **argv)
 {
 	t_window	w;
 
+	ft_arg_error(argc);
 	w.map = ft_get_map(argv[1]);
 	w.mlx = mlx_init();
 	w.a_mouse = 0;
@@ -32,7 +42,6 @@ int	main(int argc, const char **argv)
 	mlx_hook(w.win, 6, 1L << 6, ft_mouse_event, &w);
 	mlx_hook(w.win, 4, 1L << 2, ft_scroll_wheel, &w);
 	ft_update_cgravity(w.map);
-	w.map->modif.zoom = 1;
 	ft_draw_image(&w);
 	mlx_loop(w.mlx);
 	ft_exit(&w);
